@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for paragraf app",
+  "main": "index.js",
+  "scripts": {
+    "start": "forever index.js",
+    "preinstall": "mysql -u root < sql/init.sql || true",
+    "test": "istanbul cover _mocha"
+  },
+  "author": "Adrien Morel",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "express": "^4.14.0",
+    "forever": "^0.15.3",
+    "mysql": "^2.12.0",
+    "passport": "^0.3.2",
+    "passport-facebook-token": "^3.3.0",
+    "sequelize": "^3.27.0"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.2",
+    "request": "^2.79.0"
+  }
+}
