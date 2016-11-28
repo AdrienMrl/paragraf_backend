@@ -34,6 +34,12 @@ const basicStory = {
 }
 
 const objectIsOfSameType = (objA, objB) => {
+
+  if (JSON.stringify(objA)[0] === '[' && JSON.stringify(objB)[0] === '[')
+    return true
+  if (typeof objA !== 'object')
+    return typeof objA === typeof objB
+
   const keysA = Object.keys(objA)
   const keysB = Object.keys(objB)
   if (JSON.stringify(keysA) !== JSON.stringify(keysB)) {
@@ -43,8 +49,9 @@ const objectIsOfSameType = (objA, objB) => {
   let sameType = true
 
   keysA.forEach((key) => {
-    if (!objectIsOfSameType(objA[key], objB[key]))
+    if (!objectIsOfSameType(objA[key], objB[key])) {
       sameType = false
+    }
   })
   return sameType
 }

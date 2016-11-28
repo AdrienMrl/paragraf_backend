@@ -19,7 +19,7 @@ app.get('/token', (req, res) => {
   .then(({email, name, id}) =>
   db.findUser(id)
   .then(user => sendToken(user))
-  .catch((err) => {
+  .catch(() => {
     return db.registerUser(id, email, name)
     .then(user => sendToken(user))
     .catch(err => console.error(err))
@@ -29,10 +29,11 @@ app.get('/token', (req, res) => {
 
 const startListening = port => app.listenAsync(port)
 
-app.get('/stories', (req, res) => {
+app.get('/stories', (req, res) =>
   auth.authenticateRequest(req, res)
-    .then(() => res.send(db.getFeed()))
-})
+    .then(() => db.getFeed())
+    .then((feed) => res.send(feed))
+    .catch(err => res.status(403).send(err)))
 
 module.exports = {
   startListening
