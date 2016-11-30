@@ -54,5 +54,6 @@ User.sync(force)
 module.exports = {
   User,
   Story,
+  Contributors,
   Paragraph
 }

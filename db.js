@@ -17,30 +17,24 @@ const createStory = (title, backgroundId) => model.Story.create({
 
 const findUser = (facebookId) => model.User.findOne({
   where: {facebookId}
-})
+}).then(u => u.dataValues)
 
-/* JSON of a stroy
-[
-    {
-        "title": "Harry Potten",
-        "upvote": 32,
-        "contributors": [
-            {
-                "name": "Adri",
-                "id": 6872364
-            }
-        ],
-        "paragraphs": [
-            {
-                "author_name": "Adri",
-                "author_id": 7283746
-                "parution": 78326482736,
-                "text": "Paragraph content"
-            }
-        ]
-    }
-]
-*/
+
+const getUser = (facebookId) =>
+  findUser(facebookId)
+    .then(u =>
+      model.Contributors.count({
+        where: {userId: u.facebookId}
+      })
+      .then(storyCount => ({
+        full_name: u.fullName, // eslint-disable-line
+        profile_pic: 'https://profilepic.com/pic.jpg', // eslint-disable-line
+        bio: 'not implemented',
+        stories: storyCount,
+        reputation: u.reputation
+      }))
+      .catch(err => console.log(err)))
+
 
 const getFeed = () => model.Story.findAll()
   .map((e) => ({
@@ -54,5 +48,6 @@ module.exports = {
   registerUser,
   getFeed,
   findUser,
+  getUser,
   createStory
 }

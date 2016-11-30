@@ -32,8 +32,15 @@ const startListening = port => app.listenAsync(port)
 app.get('/stories', (req, res) =>
   auth.authenticateRequest(req, res)
     .then(() => db.getFeed())
-    .then((feed) => res.send(feed))
+    .then(feed => res.send(feed))
     .catch(err => res.status(403).send(err)))
+
+app.get('/users/:userId', (req, res) =>
+  auth.authenticateRequest(req, res)
+    .then(() => db.getUser(req.params.userId))
+    .then(usrJson => res.send(usrJson))
+    .catch(err => res.status(404).send(err))
+)
 
 module.exports = {
   startListening

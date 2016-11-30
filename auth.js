@@ -15,10 +15,13 @@ const authenticateUser = (token) =>
       return Promise.reject(new Error(JSON.stringify(response)))
     })
 
-const authenticateRequest = (req, res) =>
-    Promise.resolve(jwt.decode(req.query.access_token, 'secretstuff'))
-      .catch(() => res.status(403).send())
-      
+const authenticateRequest = (req) => {
+  const decoded = jwt.decode(req.query.access_token, 'secretstuff')
+  return decoded ?
+    bluebird.resolve(decoded) :
+    bluebird.reject('Authentication failed. Check token.')
+}
+
 module.exports = {
   authenticateUser,
   authenticateRequest,
